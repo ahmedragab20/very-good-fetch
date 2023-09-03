@@ -1,2 +1,3 @@
 # very-good-fetch
-new version of ar-catch.
+the new version of ar-catch.
+will have a better structure and even more utils to help you rely more on the fetch() api
