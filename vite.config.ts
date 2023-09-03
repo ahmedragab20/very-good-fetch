@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/lib/lib.ts"),
-      name: "arcatch",
-      fileName: "arcatch",
+      name: "very-good-fetch",
+      fileName: "very-good-fetch",
     },
   },
   plugins: [

@@ -1,6 +1,6 @@
 {
-  "name": "ar-catch",
-  "version": "0.0.23",
+  "name": "very-good-fetch",
+  "version": "0.0.0",
   "description": "A TypeScript library for making HTTP requests with caching system that can be used as standalone feature.",
   "author": "Ahmed Ragab <ahmedragab20901@gmail.com>",
   "license": "MIT",
@@ -9,13 +9,13 @@
     "url": "https://github.com/ahmedragab20/ar-catch"
   },
   "type": "module",
-  "types": "./dist/arcatch.d.ts",
-  "main": "./dist/arcatch.umd.cjs",
-  "module": "./dist/arcatch.js",
+  "types": "./dist/very-good-fetch.d.ts",
+  "main": "./dist/very-good-fetch.umd.cjs",
+  "module": "./dist/very-good-fetch.js",
   "exports": {
     ".": {
-      "import": "./dist/arcatch.js",
-      "require": "./dist/arcatch.umd.cjs"
+      "import": "./dist/very-good-fetch.js",
+      "require": "./dist/very-good-fetch.umd.cjs"
     }
   },
   "files": [
@@ -31,8 +31,9 @@
     "library",
     "open-source",
     "ar-catch",
-    "arcatch",
+    "very-good-fetch",
     "ar catch",
+    "arcatch",
     "caching",
     "cache"
   ],
