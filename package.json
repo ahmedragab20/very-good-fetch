@@ -1,0 +1,57 @@
+{
+  "name": "ar-catch",
+  "version": "0.0.23",
+  "description": "A TypeScript library for making HTTP requests with caching system that can be used as standalone feature.",
+  "author": "Ahmed Ragab <ahmedragab20901@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmedragab20/ar-catch"
+  },
+  "type": "module",
+  "types": "./dist/arcatch.d.ts",
+  "main": "./dist/arcatch.umd.cjs",
+  "module": "./dist/arcatch.js",
+  "exports": {
+    ".": {
+      "import": "./dist/arcatch.js",
+      "require": "./dist/arcatch.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "http",
+    "https",
+    "fetch",
+    "vite",
+    "request",
+    "typescript",
+    "library",
+    "open-source",
+    "ar-catch",
+    "arcatch",
+    "ar catch",
+    "caching",
+    "cache"
+  ],
+  "homepage": "https://github.com/ahmedragab20/ar-catch",
+  "bugs": {
+    "url": "https://github.com/ahmedragab20/ar-catch/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "rm -rf dist && tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.0",
+    "vite-plugin-dts": "^3.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
