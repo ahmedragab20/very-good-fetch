@@ -1,6 +1,6 @@
 import VeryGoodConfig from "./lib/config";
 import { useGlobal } from "./lib/utils/internals";
-import { printlog, printwarn } from "./lib/utils/logger";
+import { printlog, printwarn } from "./lib/utils/console";
 const config = new VeryGoodConfig({
   config: {
     baseUrl: "https://jsonplaceholder.typicode.com",
