@@ -1,3 +1,26 @@
+import { ResponseType } from "./fetch";
+
+export interface IVeryGoodConfigContructor {
+  /**
+   * fetch instance
+   * @type {any}
+   * @default null
+   */
+  fetchInstance?: any;
+  /**
+   * config - will be used as the default referance for all requests
+   * @type {IVeryGoodConfig}
+   * @default {}
+   */
+  config?: IVeryGoodConfig;
+  /**
+   * interceptors - functions that will be called before and after all the requests, responses and errors
+   * @type {IVeryGoodInterceptors}
+   * @default {}
+   */
+  interceptors?: IVeryGoodInterceptors;
+}
+
 export interface IVeryGoodConfig {
   /**
    * base url for all requests
@@ -26,6 +49,14 @@ export interface IVeryGoodConfig {
    * @default false
    */
   muteErrors?: boolean;
+  /**
+   * Responses type (you can override it from the request vOptions)
+   * @default 'json'
+   * @type {string}
+   * @optional
+   * @values 'json' | 'text' | 'blob' | 'arrayBuffer' | 'formData'
+   */
+  responseType?: ResponseType;
 }
 
 export interface IVeryGoodInterceptors {

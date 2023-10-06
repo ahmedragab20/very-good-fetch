@@ -1,27 +1,10 @@
-import { IVeryGoodConfig, IVeryGoodInterceptors } from "./types/config";
+import {
+  IVeryGoodConfig,
+  IVeryGoodConfigContructor,
+  IVeryGoodInterceptors,
+} from "./types/config";
 import { validateFetchInstance } from "./utils/fetch.util";
 import { useGlobal } from "./utils/internals";
-
-interface IVeryGoodConfigContructor {
-  /**
-   * fetch instance
-   * @type {any}
-   * @default null
-   */
-  fetchInstance?: any;
-  /**
-   * config - will be used as the default referance for all requests
-   * @type {IVeryGoodConfig}
-   * @default {}
-   */
-  config?: IVeryGoodConfig;
-  /**
-   * interceptors - functions that will be called before and after all the requests, responses and errors
-   * @type {IVeryGoodInterceptors}
-   * @default {}
-   */
-  interceptors?: IVeryGoodInterceptors;
-}
 
 export default class VeryGoodConfig {
   private readonly _fetchInstance: any = null;
@@ -31,7 +14,23 @@ export default class VeryGoodConfig {
   constructor(payload: IVeryGoodConfigContructor) {
     if (payload.fetchInstance) {
       const validInstance = validateFetchInstance(payload.fetchInstance);
-      this._fetchInstance = validInstance ? payload.fetchInstance : null;
+      if (validInstance) {
+        this._fetchInstance = payload.fetchInstance;
+      } else {
+        throw new Error(
+          "The fetch instance provided is not valid, check: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"
+        );
+      }
+    } else {
+      if ("fetch" in globalThis) {
+        const validInstance = validateFetchInstance(globalThis.fetch);
+        if (validInstance) this._fetchInstance = globalThis.fetch;
+        else throw new Error("The global fetch instance is not valid");
+      } else {
+        throw new Error(
+          "No valid fetch instance provided and no global fetch instance found, make sure that the fetch API is available in your environment"
+        );
+      }
     }
 
     this._config = payload.config || {};
@@ -39,5 +38,7 @@ export default class VeryGoodConfig {
 
     // set the internal globals
     useGlobal().set("_config", this._config);
+    // set the fetch instance
+    useGlobal().set("_vFetch", this._fetchInstance);
   }
 }

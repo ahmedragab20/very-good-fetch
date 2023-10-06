@@ -1,23 +1,20 @@
-import VeryGoodConfig from "./lib/config";
-import { useGlobal } from "./lib/utils/internals";
-import { printlog, printwarn } from "./lib/utils/console";
-const config = new VeryGoodConfig({
+import { vSetupConfig, vFetch } from "./lib";
+
+const config = vSetupConfig({
   config: {
     baseUrl: "https://jsonplaceholder.typicode.com",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    muteLogs: false,
-    muteWarnings: false,
-    muteErrors: false
-  },
-  interceptors: {}
+    responseType: "arrayBuffer"
+  }
 });
 
-printlog(config);
+const fetchPosts = async () => {
+  const response = await vFetch('https://jsonplaceholder.typicode.com/posts');
+  
+  console.log("response", response);
+}
 
-
-printlog(useGlobal().get('_config'));
-
-printwarn("This is a warning message");
+fetchPosts();
 
