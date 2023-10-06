@@ -37,13 +37,7 @@ console.log("config", config);
 const fetchPosts = async () => {
   const response = await vFetch("https://dummyjson.com/products/add", {
     method: "POST",
-    body: JSON.stringify({
-      id: 1,
-      name: "Handmade Cotton Shoes",
-      price: 100,
-      description: "Handmade Cotton Shoes",
-      image: "http://lorempixel.com/640/480/technics",
-    }),
+    body: 2,
   });
 
   console.log("response", response);
