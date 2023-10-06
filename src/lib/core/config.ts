@@ -2,9 +2,9 @@ import {
   IVeryGoodConfig,
   IVeryGoodConfigContructor,
   IVeryGoodInterceptors,
-} from "./types/config";
-import { validateFetchInstance } from "./utils/fetch.util";
-import { useGlobal } from "./utils/internals";
+} from "../types/config";
+import { validateFetchInstance } from "../utils/vFetch.util";
+import { useGlobal } from "../utils/internals";
 
 export default class VeryGoodConfig {
   private readonly _fetchInstance: any = null;

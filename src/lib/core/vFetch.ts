@@ -1,9 +1,8 @@
-import { error } from "console";
-import { IVeryGoodFetchWrapperPayload } from "./types/fetch";
-import { getRequestUrl, getResponseType } from "./utils/fetch.util";
-import { useGlobal } from "./utils/internals";
+import { IVeryGoodFetchWrapperPayload } from "../types/vFetch";
+import { getRequestUrl, getResponseType } from "../utils/vFetch.util";
+import { useGlobal } from "../utils/internals";
 import vFetchEngine from "./vFetchEngine";
-import { printerror } from "./utils/console";
+import { printerror } from "../utils/console";
 
 export default class veryGoodFetchWrapper {
   private readonly _url: string = "";
@@ -33,7 +32,6 @@ export default class veryGoodFetchWrapper {
         _fetch = fetch || null;
       }
 
-      // TODO: Replaced by vFetchEngine
       const response = await vFetchEngine(_fetch, this._url, {
         ...restOptions,
         headers: {

@@ -1,6 +1,5 @@
 import { IVeryGoodConfig, IVeryGoodInterceptors } from "../types/config";
-import { IVeryGoodOptions } from "../types/fetch";
-import { isObject } from "./helpers";
+import { IVeryGoodOptions } from "../types/vFetch";
 
 export function validateFetchInstance(fetchInstance: any): boolean {
   try {

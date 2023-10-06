@@ -3,10 +3,10 @@
  * the main entry point for the library
  */
 import { IVeryGoodConfigContructor } from "./types/config";
-import { IVeryGoodFetchWrapperPayload } from "./types/fetch";
+import { IVeryGoodFetchWrapperPayload } from "./types/vFetch";
 
-import VeryGoodConfig from "./config";
-import VeryGoodFetchWrapper from "./vfetch";
+import VeryGoodConfig from "./core/config";
+import VeryGoodFetchWrapper from "./core/vFetch";
 
 /**
  * setup the config for the library

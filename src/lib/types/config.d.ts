@@ -1,4 +1,4 @@
-import { ResponseType } from "./fetch";
+import { ResponseType } from "./vFetch";
 
 export interface IVeryGoodConfigContructor {
   /**

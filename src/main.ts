@@ -2,7 +2,7 @@ import { vSetupConfig, vFetch } from "./lib";
 
 const config = vSetupConfig({
   config: {
-    baseUrl: "https://jsonplaceholder.typicode.com",
+    baseUrl: "https://dummyjson.com/products/",
     responseType: "json",
     headers: {
       "Hello-World": "Hello World",
@@ -35,7 +35,7 @@ const config = vSetupConfig({
 console.log("config", config);
 
 const fetchPosts = async () => {
-  const response = await vFetch("https://dummyjson.com/products/add", {
+  const response = await vFetch("add", {
     method: "POST",
     body: 2,
   });
