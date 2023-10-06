@@ -40,5 +40,6 @@ export default class VeryGoodConfig {
     useGlobal().set("_config", this._config);
     // set the fetch instance
     useGlobal().set("_vFetch", this._fetchInstance);
+    useGlobal().set("_interceptors", this._interceptors);
   }
 }

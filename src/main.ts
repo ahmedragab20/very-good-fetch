@@ -3,18 +3,50 @@ import { vSetupConfig, vFetch } from "./lib";
 const config = vSetupConfig({
   config: {
     baseUrl: "https://jsonplaceholder.typicode.com",
+    responseType: "json",
     headers: {
-      "Content-Type": "application/json",
+      "Hello-World": "Hello World",
     },
-    responseType: "arrayBuffer"
-  }
+  },
+  interceptors: {
+    onBeforeRequest(request) {
+      console.log("onBeforeRequest ✨", request);
+      request.headers.set("Hello-World-90", "Hello World");
+
+      return request;
+    },
+    onAfterRequest(request) {
+      console.log("onAfterRequest", request);
+      return request;
+    },
+    onBeforeResponse(response) {
+      console.log("onBeforeResponse", response);
+      console.log(response.type);
+      return response;
+    },
+    onError(error) {
+      console.log("onError", error);
+
+      return error;
+    },
+  },
 });
 
+console.log("config", config);
+
 const fetchPosts = async () => {
-  const response = await vFetch('https://jsonplaceholder.typicode.com/posts');
-  
+  const response = await vFetch("https://dummyjson.com/products/add", {
+    method: "POST",
+    body: JSON.stringify({
+      id: 1,
+      name: "Handmade Cotton Shoes",
+      price: 100,
+      description: "Handmade Cotton Shoes",
+      image: "http://lorempixel.com/640/480/technics",
+    }),
+  });
+
   console.log("response", response);
-}
+};
 
 fetchPosts();
-

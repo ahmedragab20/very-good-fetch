@@ -79,12 +79,6 @@ export interface IVeryGoodInterceptors {
    */
   onBeforeResponse?: (response: Response) => Response;
   /**
-   * triggers after the response is received before the response is returned to the user
-   * @param {response}
-   * @returns {response}
-   */
-  onAfterResponse?: (response: Response) => Response;
-  /**
    * triggers when an error occurs during the request
    * @param {error}
    * @returns {error}

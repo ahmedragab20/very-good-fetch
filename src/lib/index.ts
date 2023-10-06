@@ -6,7 +6,7 @@ import { IVeryGoodConfigContructor } from "./types/config";
 import { IVeryGoodFetchWrapperPayload } from "./types/fetch";
 
 import VeryGoodConfig from "./config";
-import VeryGoodFetchWrapper from "./fetch";
+import VeryGoodFetchWrapper from "./vfetch";
 
 /**
  * setup the config for the library
