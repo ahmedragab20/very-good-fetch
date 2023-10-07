@@ -1,4 +1,6 @@
 import { vSetupConfig, vFetch } from "./lib";
+import { useGlobal } from "./lib/utils/internals";
+const conf = useGlobal().get("_config");
 
 const config = vSetupConfig({
   config: {
@@ -21,7 +23,7 @@ const config = vSetupConfig({
     },
     onBeforeResponse(response) {
       console.log("onBeforeResponse", response);
-      console.log(response.type);
+
       return response;
     },
     onError(error) {

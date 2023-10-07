@@ -2,10 +2,10 @@
  * @module lib
  * the main entry point for the library
  */
-import { IVeryGoodConfigContructor } from "./types/config";
+import { IVeryGoodConfigContructor } from "./types/vConfig";
 import { IVeryGoodFetchWrapperPayload } from "./types/vFetch";
 
-import VeryGoodConfig from "./core/config";
+import VeryGoodConfig from "./core/vConfig";
 import VeryGoodFetchWrapper from "./core/vFetch";
 
 /**

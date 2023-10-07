@@ -2,7 +2,7 @@ import {
   IVeryGoodConfig,
   IVeryGoodConfigContructor,
   IVeryGoodInterceptors,
-} from "../types/config";
+} from "../types/vConfig";
 import { validateFetchInstance } from "../utils/vFetch.util";
 import { useGlobal } from "../utils/internals";
 
