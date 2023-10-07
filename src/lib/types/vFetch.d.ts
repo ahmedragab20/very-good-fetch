@@ -1,4 +1,5 @@
 import { IGerneric } from ".";
+import { TCacheStrategy } from "./vCache";
 
 export interface IVeryGoodFetchWrapperPayload {
   /**
@@ -39,13 +40,26 @@ export interface IVeryGoodOptions {
    * @values 'json' | 'text' | 'blob' | 'arrayBuffer' | 'formData'
    */
   responseType?: ResponseType;
+  /**
+   * cache the response
+   * @default undefined
+   * @type {TCacheStrategy}
+   * @optional
+   */
+  cache?: TCacheStrategy;
+  /**
+   * clear the old cache if it's exist
+   * @default false
+   * @type {boolean}
+   * @optional
+   */
+  refreshCache?: boolean;
 
   /*
     picky response
     retry
     debounce
     throttle
-    Caching
    */
 }
 

@@ -3,6 +3,7 @@ import { getRequestUrl, getResponseType } from "../utils/vFetch.util";
 import { useGlobal } from "../utils/internals";
 import vFetchEngine from "./vFetchEngine";
 import { printerror } from "../utils/console";
+import VeryGoodCache from "./vCache";
 
 export default class veryGoodFetchWrapper {
   private readonly _url: string = "";
@@ -32,6 +33,18 @@ export default class veryGoodFetchWrapper {
         _fetch = fetch || null;
       }
 
+      if (vOptions?.cache && !vOptions?.refreshCache) {
+        const cachedResponse = new VeryGoodCache(vOptions.cache).get(this._url);
+
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+      }
+
+      if (vOptions?.refreshCache && vOptions?.cache) {
+        new VeryGoodCache(vOptions.cache).delete(this._url);
+      }
+
       const response = await vFetchEngine(_fetch, this._url, {
         ...restOptions,
         headers: {
@@ -40,7 +53,12 @@ export default class veryGoodFetchWrapper {
         },
       });
 
-      return response?.[getResponseType(vOptions || {}, this._config || {})]();
+      const finalResponse = response?.[getResponseType(vOptions || {}, this._config || {})]();
+      
+      if (vOptions?.cache) {
+        new VeryGoodCache(vOptions.cache).set(this._url, finalResponse);
+      }
+      return finalResponse; 
     } catch (error) {
       printerror(error);
     }

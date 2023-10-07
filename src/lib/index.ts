@@ -7,6 +7,8 @@ import { IVeryGoodFetchWrapperPayload } from "./types/vFetch";
 
 import VeryGoodConfig from "./core/vConfig";
 import VeryGoodFetchWrapper from "./core/vFetch";
+import VeryGoodCache from "./core/vCache";
+import { TCacheStrategy } from "./types/vCache";
 
 /**
  * setup the config for the library
@@ -25,7 +27,25 @@ const vSetupConfig = (payload: IVeryGoodConfigContructor): VeryGoodConfig =>
 const vFetch = async (
   url: string,
   options?: IVeryGoodFetchWrapperPayload
-): Promise<any> =>
-  await new VeryGoodFetchWrapper(url, options).vFetch();
+): Promise<any> => await new VeryGoodFetchWrapper(url, options).vFetch();
 
-export { vSetupConfig, vFetch };
+/**
+ * the cache wrapper
+ * @param {TCacheStrategy} strategy
+ * @returns {VeryGoodCache}
+ * @example
+ * const cache = vCache("memory");
+ * cache.set("key", "value");
+ * cache.get("key")
+ * cache.has("key")
+ * cache.delete("key")
+ * cache.clear()
+ * cache.keys()
+ * cache.values()
+ * cache.asObject()
+ * cache.size()
+ */
+const vCache = (strategy: TCacheStrategy): VeryGoodCache =>
+  new VeryGoodCache(strategy);
+
+export { vSetupConfig, vFetch, vCache };
