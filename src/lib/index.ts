@@ -48,4 +48,5 @@ const vFetch = async (
 const vCache = (strategy: TCacheStrategy): VeryGoodCache =>
   new VeryGoodCache(strategy);
 
+export * from "./types/index"
 export { vSetupConfig, vFetch, vCache };
