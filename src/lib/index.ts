@@ -10,6 +10,9 @@ import VeryGoodConfig from "./core/vConfig";
 import VeryGoodFetchWrapper from "./core/vFetch";
 import VeryGoodCache from "./core/vCache";
 
+import "../lib/types/index";
+export * from "./types/index";
+
 /**
  * setup the config for the library
  * @param {IVeryGoodConfigContructor} payload
