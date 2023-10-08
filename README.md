@@ -92,15 +92,6 @@ const config = vSetupConfig({
     },
   },
 });
-
-// don't to import this file in your app's entry point (e.g. index.ts)
-// import './api.config.ts';
-// or: 
-// import api from './api.config.ts';
-// if you're using Vue.js for example, you can do this:
-// [Vue/app].use(api);
-
-// now you can use the api anywhere in your app with these configurations❤️
 ```
 
 ## vFetch Examples 📝
