@@ -32,18 +32,17 @@ export default class veryGoodFetchWrapper {
         // life is full of surprises, MAN! 🤷‍♂️
         _fetch = fetch || null;
       }
+      const cacheBox =
+        vOptions && vOptions.cache ? new VeryGoodCache(vOptions.cache) : null;
 
-      if (vOptions?.cache && !vOptions?.refreshCache) {
-        const cachedResponse = new VeryGoodCache(vOptions.cache).get(this._url);
+      if (cacheBox && !vOptions?.refreshCache) {
+        const cachedResponse = cacheBox?.get(this._url);
 
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+        if (cachedResponse) return cachedResponse;
       }
 
-      if (vOptions?.refreshCache && vOptions?.cache) {
-        new VeryGoodCache(vOptions.cache).delete(this._url);
-      }
+      if (cacheBox && vOptions?.refreshCache && vOptions?.cache)
+        cacheBox?.delete(this._url);
 
       const response = await vFetchEngine(_fetch, this._url, {
         ...restOptions,
@@ -53,12 +52,12 @@ export default class veryGoodFetchWrapper {
         },
       });
 
-      const finalResponse = response?.[getResponseType(vOptions || {}, this._config || {})]();
-      
-      if (vOptions?.cache) {
-        new VeryGoodCache(vOptions.cache).set(this._url, finalResponse);
-      }
-      return finalResponse; 
+      const finalResponse = await response?.[
+        getResponseType(vOptions || {}, this._config || {})
+      ]();
+
+      if (cacheBox && vOptions?.cache) cacheBox?.set(this._url, finalResponse);
+      return finalResponse;
     } catch (error) {
       printerror(error);
     }

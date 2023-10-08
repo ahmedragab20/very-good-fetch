@@ -5,7 +5,7 @@ import dts from "vite-plugin-dts";
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(__dirname, "src/lib/lib.ts"),
+      entry: resolve(__dirname, "src/lib/index.ts"),
       name: "very-good-fetch",
       fileName: "very-good-fetch",
     },

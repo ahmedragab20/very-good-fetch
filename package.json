@@ -6,10 +6,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ahmedragab20/ar-catch"
+    "url": "https://github.com/ahmedragab20/very-good-fetch"
   },
   "type": "module",
-  "types": "./dist/very-good-fetch.d.ts",
+  "types": "./dist/lib/types/types.d.ts",
   "main": "./dist/very-good-fetch.umd.cjs",
   "module": "./dist/very-good-fetch.js",
   "exports": {
@@ -37,9 +37,9 @@
     "caching",
     "cache"
   ],
-  "homepage": "https://github.com/ahmedragab20/ar-catch",
+  "homepage": "https://github.com/ahmedragab20/very-good-fetch",
   "bugs": {
-    "url": "https://github.com/ahmedragab20/ar-catch/issues"
+    "url": "https://github.com/ahmedragab20/very-good-fetch/issues"
   },
   "scripts": {
     "dev": "vite",

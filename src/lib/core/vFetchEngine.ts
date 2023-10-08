@@ -1,4 +1,4 @@
-import { IGerneric } from "../types";
+import { IGerneric } from "../types/index.ts";
 import { printerror } from "../utils/console";
 import { onError, onRequest, onResponse } from "../utils/interceptors";
 

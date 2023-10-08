@@ -1,4 +1,4 @@
-import { IGerneric } from ".";
+import { IGerneric } from "./index";
 import { TCacheStrategy } from "./vCache";
 
 export interface IVeryGoodFetchWrapperPayload {

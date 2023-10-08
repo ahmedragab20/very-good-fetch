@@ -4,11 +4,11 @@
  */
 import { IVeryGoodConfigContructor } from "./types/vConfig";
 import { IVeryGoodFetchWrapperPayload } from "./types/vFetch";
+import { TCacheStrategy } from "./types/vCache";
 
 import VeryGoodConfig from "./core/vConfig";
 import VeryGoodFetchWrapper from "./core/vFetch";
 import VeryGoodCache from "./core/vCache";
-import { TCacheStrategy } from "./types/vCache";
 
 /**
  * setup the config for the library

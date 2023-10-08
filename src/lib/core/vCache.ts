@@ -1,5 +1,5 @@
 import { generateCacheKey } from "../utils/vCache";
-import { IGerneric } from "../types";
+import { IGerneric } from "../types/index.ts";
 import { TCacheStrategy } from "../types/vCache";
 import { printerror } from "../utils/console";
 import { vStore } from "./vStore";
@@ -39,7 +39,7 @@ export default class vCache {
       k = generateCacheKey(key);
     }
 
-    const store = new vStore(this._strategy!);
+    const store = new vStore(this._strategy!);    
     store.set(k, {
       __addedAt: Date.now(),
       value,

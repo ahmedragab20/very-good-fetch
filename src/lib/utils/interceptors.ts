@@ -1,4 +1,4 @@
-import { IGerneric } from "../types";
+import { IGerneric } from "../types/index.ts";
 import { useGlobal } from "./internals";
 
 export async function onRequest(

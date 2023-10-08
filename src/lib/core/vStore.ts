@@ -1,4 +1,4 @@
-import { IGerneric } from "../types";
+import { IGerneric } from "../types/index.ts";
 import { ICacheValue, TCacheStrategy } from "../types/vCache";
 import { printerror } from "../utils/console";
 import { cacheFactory, keyExpired } from "../utils/vCache";
@@ -21,13 +21,13 @@ export class vStore {
     if (hasExpired) {
       this.delete(key);
     }
-  }
+  };
 
   private readonly _refreshKey = (key: string) => {
     if (this.has(key)) {
       this.delete(key);
     }
-  }
+  };
 
   private readonly _getTimestamp = (key: string): string => {
     const cache = cacheFactory(this._strategy!);
@@ -42,7 +42,7 @@ export class vStore {
       printerror("🤦🏻‍♂️ Invalid cache strategy");
       return "";
     }
-  }
+  };
 
   /**
    * key exists
@@ -114,7 +114,7 @@ export class vStore {
   }
 
   /**
-   * Deletes the value of a key
+   * Deletes the value of a key in all strategies
    * @param {string} key
    */
   delete(key: string) {
@@ -123,29 +123,49 @@ export class vStore {
       return;
     }
 
-    const cache = cacheFactory(this._strategy!);
+    const localCache: TCacheStrategy = "local";
+    const sessionCache: TCacheStrategy = "session";
+    const memoryCache: TCacheStrategy = "memory";
 
-    if (cache instanceof Map) {
-      cache.delete(key);
-    } else if (cache instanceof Storage) {
-      cache.removeItem(key);
-    } else {
-      printerror("🤦🏻‍♂️ Invalid cache strategy");
+    const local = cacheFactory(localCache);
+    const session = cacheFactory(sessionCache);
+    const memory = cacheFactory(memoryCache);
+    // @ts-ignore
+    if (local?.getItem(key)) {
+      // @ts-ignore
+      local.removeItem(key);
+    }
+    // @ts-ignore
+    if (session?.getItem(key)) {
+      // @ts-ignore
+      session.removeItem(key);
+    }
+    // @ts-ignore
+    if (memory?.has(key)) {
+      memory.delete(key);
     }
   }
 
   /**
-   * Clears the cache
+   * Clears the cache for all strategies
    */
   clear() {
-    const cache = cacheFactory(this._strategy!);
+    const localCache: TCacheStrategy = "local";
+    const sessionCache: TCacheStrategy = "session";
+    const memoryCache: TCacheStrategy = "memory";
 
-    if (cache instanceof Map) {
-      cache.clear();
-    } else if (cache instanceof Storage) {
-      cache.clear();
-    } else {
-      printerror("🤦🏻‍♂️ Invalid cache strategy");
+    const local = cacheFactory(localCache);
+    const session = cacheFactory(sessionCache);
+    const memory = cacheFactory(memoryCache);
+
+    if (local instanceof Storage) {
+      local.clear();
+    }
+    if (session instanceof Storage) {
+      session.clear();
+    }
+    if (memory instanceof Map) {
+      memory.clear();
     }
   }
 
