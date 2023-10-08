@@ -9,7 +9,7 @@
     "url": "https://github.com/ahmedragab20/very-good-fetch"
   },
   "type": "module",
-  "types": "./dist/lib/types/types.d.ts",
+  "types": "./dist/lib/types/index.d.ts",
   "main": "./dist/very-good-fetch.umd.cjs",
   "module": "./dist/very-good-fetch.js",
   "exports": {
