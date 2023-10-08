@@ -23,19 +23,10 @@
   ],
   "keywords": [
     "http",
-    "https",
+    "fetch-api",
     "fetch",
-    "vite",
-    "request",
-    "typescript",
-    "library",
-    "open-source",
     "ar-catch",
-    "very-good-fetch",
-    "ar catch",
-    "arcatch",
-    "caching",
-    "cache"
+    "very-good-fetch"
   ],
   "homepage": "https://github.com/ahmedragab20/very-good-fetch",
   "bugs": {
