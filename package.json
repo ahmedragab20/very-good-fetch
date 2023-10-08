@@ -1,6 +1,6 @@
 {
   "name": "very-good-fetch",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A TypeScript library for making HTTP requests with caching system that can be used as standalone feature.",
   "author": "Ahmed Ragab <ahmedragab20901@gmail.com>",
   "license": "MIT",
