@@ -1,3 +1,4 @@
+<span style="font-size: 75px;"> ⚡️ </span>
 # All you need is a good fetch() API 💚
 
 Elevate your TypeScript/Javascript development experience to new heights with "very good fetch," the ultimate fetch API wrapper! ✨
