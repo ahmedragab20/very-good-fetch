@@ -55,12 +55,47 @@ export interface IVeryGoodOptions {
    */
   refreshCache?: boolean;
 
-  /*
-    picky response
-    retry
-    debounce
-    throttle
+  /**
+   * Retry options the request if it fails
+   * @default undefined
+   * @type {IRetryOptions}
+   * @optional
    */
+  retry?: IRetryOptions;
+}
+
+export interface IRetryOptions {
+  /**
+   * The maximum amount of times to retry the operation. Default is 3.
+   */
+  maxRetries?: number;
+  /**
+   * The amount of time to wait between retries, in milliseconds. Default is 1000.
+   */
+  delay?: number;
+  /**
+   * A function that determines whether the operation should be retried after an error. Default is true.
+   */
+  retryCondition?: (error: any) => boolean;
+  /**
+   * A function that is executed after each failed retry. Default is an empty function.
+   * @param error
+   */
+  retryCallback?: (error: any) => void;
+  /**
+   * A function that is executed after the operation completes successfully, or after the operation has failed and the retries are exhausted. Default is an empty function.
+   * @param error
+   */
+  retryComplete?: () => void;
+  /**
+   * The operation to retry.
+   * @returns {Promise<any>}
+   */
+  request: () => Promise<any>;
+}
+
+export interface IRetryOptionsInternal extends IRetryOptions {
+  _retryCount: number;
 }
 
 export type ResponseType =

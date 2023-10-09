@@ -2,9 +2,9 @@ import { IVeryGoodFetchWrapperPayload } from "../types/vFetch";
 import { getRequestUrl, getResponseType } from "../utils/vFetch.util";
 import { useGlobal } from "../utils/internals";
 import vFetchEngine from "./vFetchEngine";
-import { printerror } from "../utils/console";
+import { printerror, printlog } from "../utils/console";
 import VeryGoodCache from "./vCache";
-
+import vRetry from "./vRetry";
 export default class veryGoodFetchWrapper {
   private readonly _url: string = "";
   private readonly _options: IVeryGoodFetchWrapperPayload = {};
@@ -14,7 +14,6 @@ export default class veryGoodFetchWrapper {
   constructor(url: string, options?: IVeryGoodFetchWrapperPayload) {
     this._config = useGlobal().get("_config") || {};
     this._vFetch = useGlobal().get("_vFetch");
-
     this._url = getRequestUrl(url, this._config);
     this._options = options || {};
   }
@@ -44,17 +43,51 @@ export default class veryGoodFetchWrapper {
       if (cacheBox && vOptions?.refreshCache && vOptions?.cache)
         cacheBox?.delete(this._url);
 
-      const response = await vFetchEngine(_fetch, this._url, {
-        ...restOptions,
-        headers: {
-          ...headers,
-          ...restOptions.headers,
+      const response = await vFetchEngine(
+        _fetch,
+        this._url,
+        {
+          ...restOptions,
+          headers: {
+            ...headers,
+            ...restOptions.headers,
+          },
         },
-      });
+        vOptions
+      );
 
       const finalResponse = await response?.[
         getResponseType(vOptions || {}, this._config || {})
       ]();
+
+      if (
+        !finalResponse &&
+        typeof vOptions?.retry === "object" &&
+        Object.keys(vOptions?.retry).length > 0
+      ) {
+        if (!vOptions?.retry?.request) {
+          throw new Error("Retry request is required");
+        }
+        if (!useGlobal().get("_retryCount")) {
+          useGlobal().set("_retryCount", 0);
+        }
+
+        //# the retry logic needs to separated so it doesn't get reexecuted on every request
+
+        const maxRetries = Math.abs(vOptions?.retry?.maxRetries || 3) || 3;
+
+        if (useGlobal().get("_retryCount") < maxRetries) {
+          printlog("‼️ Retrying request...");
+          const retry = new vRetry({
+            ...vOptions?.retry,
+            request: vOptions?.retry?.request!,
+            maxRetries: maxRetries,
+          });
+          const done = await retry.run();
+
+          if (!done) return;
+        }
+      }
 
       if (cacheBox && vOptions?.cache) cacheBox?.set(this._url, finalResponse);
       return finalResponse;

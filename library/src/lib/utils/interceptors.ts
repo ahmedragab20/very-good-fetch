@@ -1,9 +1,14 @@
-import { IGerneric } from "../types/index.ts";
+import vRetry from "../core/vRetry.ts";
+import {
+  IVeryGoodFetchWrapperPayload,
+  IVeryGoodOptions,
+} from "../types/index.ts";
+import { printerror, printlog } from "./console.ts";
 import { useGlobal } from "./internals.ts";
 
 export async function onRequest(
   url: string,
-  options: IGerneric
+  options: IVeryGoodFetchWrapperPayload
 ): Promise<Request> {
   const _interceptors = useGlobal().get("_interceptors") || {};
   const onBeforeRequest = _interceptors?.onBeforeRequest || null;
@@ -44,10 +49,14 @@ export async function onResponse(response: Response): Promise<Response | any> {
     }
   }
 
+  console.log("response", response);
+
   return modifiedResponse || response;
 }
 
-export async function onError(error: any): Promise<Error> {
+export async function onError(
+  error: any,
+): Promise<Error | any> {
   const _interceptors = useGlobal().get("_interceptors") || {};
   const _onError = _interceptors?.onError || null;
   let modifiedError = null;
