@@ -1,6 +1,6 @@
 import { IGerneric } from "../types/index.ts";
-import { printerror } from "../utils/console";
-import { onError, onRequest, onResponse } from "../utils/interceptors";
+import { printerror } from "../utils/console.ts";
+import { onError, onRequest, onResponse } from "../utils/interceptors.ts";
 
 export default async function vFetchEngine(
   _fetch: any,

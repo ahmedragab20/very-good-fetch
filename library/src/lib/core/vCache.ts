@@ -1,8 +1,8 @@
-import { generateCacheKey } from "../utils/vCache";
+import { generateCacheKey } from "../utils/vCache.ts";
 import { IGerneric } from "../types/index.ts";
-import { TCacheStrategy } from "../types/vCache";
-import { printerror } from "../utils/console";
-import { vStore } from "./vStore";
+import { TCacheStrategy } from "../types/vCache.ts";
+import { printerror } from "../utils/console.ts";
+import { vStore } from "./vStore.ts";
 
 interface ICacheOptions {
   expires: number;

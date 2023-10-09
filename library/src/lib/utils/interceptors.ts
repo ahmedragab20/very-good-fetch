@@ -1,5 +1,5 @@
 import { IGerneric } from "../types/index.ts";
-import { useGlobal } from "./internals";
+import { useGlobal } from "./internals.ts";
 
 export async function onRequest(
   url: string,
