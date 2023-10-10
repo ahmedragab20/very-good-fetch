@@ -1,4 +1,4 @@
-import { IRetryOptions } from "../types/vFetch";
+import { IRetryOptions } from "../types/vRetry";
 
 /**
  * Utility class to retry a function until it succeeds or the max retries is reached.

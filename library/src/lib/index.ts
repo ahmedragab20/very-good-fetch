@@ -3,7 +3,7 @@
  * the main entry point for the library
  */
 import { IVeryGoodConfigContructor } from "./types/vConfig";
-import { IRetryOptions, IVeryGoodFetchWrapperPayload } from "./types/vFetch";
+import { IVeryGoodFetchWrapperPayload } from "./types/vFetch";
 import { TCacheStrategy } from "./types/vCache";
 
 import VeryGoodConfig from "./core/vConfig";
