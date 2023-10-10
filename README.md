@@ -155,11 +155,12 @@ cache.asObject();
 
 ## very good comming features 🚀
 
-- [x] Retry requests on failure (with a limit)
-- [ ] Throuttle requests out of the box
-- [ ] Debounce requests out of the box
+- [x] Retry Module
+- [ ] Throuttle Module
+- [ ] Debounce Module
 - [ ] More cache strategies (e.g. cookies) + expire time for each cache
 - [ ] More interceptors (e.g. onBeforeRedirect, onAfterRedirect, etc.)
+- [ ] Event listeners (another version of interceptors)
 - [ ] More options (e.g. timeout, etc.)
 
 Unlock the full potential of fetch API with "very good fetch" today. Your code will thank you later! 🌟
