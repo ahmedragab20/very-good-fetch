@@ -1,6 +1,7 @@
 export default defineEventHandler(() => {
   return createError({
-    status: 500,
-    message: "Hello from vclient!",
+    statusCode: 500,
+    statusMessage: "Internal Server Error",
+    message: "😢 I'm sad"
   })
 })

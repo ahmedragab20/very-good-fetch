@@ -1,9 +1,6 @@
-import vRetry from "../core/vRetry.ts";
 import {
   IVeryGoodFetchWrapperPayload,
-  IVeryGoodOptions,
 } from "../types/index.ts";
-import { printerror, printlog } from "./console.ts";
 import { useGlobal } from "./internals.ts";
 
 export async function onRequest(
@@ -48,8 +45,6 @@ export async function onResponse(response: Response): Promise<Response | any> {
       throw new Error("onBeforeResponse must return a Response object");
     }
   }
-
-  console.log("response", response);
 
   return modifiedResponse || response;
 }

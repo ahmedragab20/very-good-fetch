@@ -54,14 +54,6 @@ export interface IVeryGoodOptions {
    * @optional
    */
   refreshCache?: boolean;
-
-  /**
-   * Retry options the request if it fails
-   * @default undefined
-   * @type {IRetryOptions}
-   * @optional
-   */
-  retry?: IRetryOptions;
 }
 
 export interface IRetryOptions {
@@ -74,31 +66,17 @@ export interface IRetryOptions {
    */
   delay?: number;
   /**
-   * A function that determines whether the operation should be retried after an error. Default is true.
+   * Function to execute when it's done retrying.
    */
-  retryCondition?: (error: any) => boolean;
+  onComplete?: (response: any) => void;
   /**
-   * A function that is executed after each failed retry. Default is an empty function.
-   * @param error
+   * Retry only if the response matches this condition.
    */
-  retryCallback?: (error: any) => void;
-  /**
-   * A function that is executed after the operation completes successfully, or after the operation has failed and the retries are exhausted. Default is an empty function.
-   * @param error
-   */
-  retryComplete?: () => void;
-  /**
-   * The operation to retry.
-   * @returns {Promise<any>}
-   */
-  request: () => Promise<any>;
-}
-
-export interface IRetryOptionsInternal extends IRetryOptions {
-  _retryCount: number;
+  retryCondition: (error: any) => boolean;
 }
 
 export type ResponseType =
+  | "pure"
   | "json"
   | "text"
   | "blob"

@@ -1,16 +1,12 @@
-import {
-  IVeryGoodFetchWrapperPayload,
-  IVeryGoodOptions,
-} from "../types/index.ts";
-import { printerror, printlog } from "../utils/console.ts";
+import { IVeryGoodFetchWrapperPayload } from "../types/index.ts";
+import { printerror } from "../utils/console.ts";
 import { onError, onRequest, onResponse } from "../utils/interceptors.ts";
 import vRetry from "./vRetry.ts";
 
 export default async function vFetchEngine(
   _fetch: any,
   url: string,
-  options: IVeryGoodFetchWrapperPayload,
-  vOptions?: IVeryGoodOptions
+  options: IVeryGoodFetchWrapperPayload
 ) {
   try {
     // on request interceptors
@@ -23,20 +19,19 @@ export default async function vFetchEngine(
       // on response interceptors
       const modifiedResponse = await onResponse(response);
 
-      return modifiedResponse;
+      return modifiedResponse || response;
     } else {
       const error = (await response?.json()) || response;
-      if (vOptions?.retry) {
-        printlog("♻️ Retrying request...");
 
-        if (!vOptions.retry.request) {
-          throw new Error("Retry request is required");
-        }
-      }
+      const modifiedError = await onError(error);
 
-      await onError(error);
+      return modifiedError || error;
     }
   } catch (error) {
     printerror(error);
+    // it'll not exute twice, just if it got unexpected error like aborting the request
+    const modifiedError = await onError(error);
+
+    return modifiedError || error;
   }
 }

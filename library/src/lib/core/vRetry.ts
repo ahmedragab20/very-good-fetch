@@ -1,76 +1,90 @@
 import { IRetryOptions } from "../types/vFetch";
-import { useGlobal } from "../utils/internals";
 
+/**
+ * Utility class to retry a function until it succeeds or the max retries is reached.
+ * @example
+ *
+ * ```typescript
+ * const retry = new vRetry({
+ *  maxRetries: 3,
+ *  delay: 1000,
+ *  onComplete: () => console.log("retry completed"),
+ *  retryCondition: (error) => error.message === "retry"
+ * });
+ *
+ * retry.run(async () => {
+ *  await vFetch("https://jsonplaceholder.typicode.com/todos/1")
+ * });
+ * ```
+ */
 export default class vRetry {
   private readonly _maxRetries: number;
   private readonly _delay: number;
-  private readonly _retryCondition?: (error: any) => boolean;
-  private readonly _retryCallback?: (error: any) => void;
-  private readonly _retryComplete?: () => void;
-  private readonly _request: () => Promise<any>;
-  _retryCount: number = useGlobal().get("_retryCount") || 0;
+  private readonly _onComplete: (response: any) => void;
+  private readonly _retryCondition: (error: any) => boolean;
+  private counter: number = 0;
 
   constructor(payload: IRetryOptions) {
-    if (!payload.request) {
-      throw new Error("Retry request is required");
-    }
-    if (payload.maxRetries && payload.maxRetries < 0) {
-      throw new Error("maxRetries must be greater than 0");
-    }
-
-    if (payload.delay && payload.delay < 0) {
-      throw new Error("delay must be greater than 0");
-    }
-
-    if (!useGlobal().get("_retryCount")) {
-      useGlobal().set("_retryCount", 0);
+    if (!payload) {
+      throw new Error("You must provide a payload to retry.");
+    } else if (typeof payload !== "object") {
+      throw new Error("The payload must be an object.");
+    } else if (
+      !payload.retryCondition ||
+      typeof payload?.retryCondition !== "function"
+    ) {
+      throw new Error("You must provide a retry condition function.");
+    } else if (payload.maxRetries && typeof payload.maxRetries !== "number") {
+      throw new Error("The maxRetries must be a number.");
+    } else if (payload.maxRetries && payload.maxRetries < 1) {
+      throw new Error("The maxRetries must be greater than 0.");
+    } else if (payload.delay && typeof payload.delay !== "number") {
+      throw new Error("The delay must be a number.");
+    } else if (payload.onComplete && typeof payload.onComplete !== "function") {
+      throw new Error("The onComplete must be a function.");
     }
 
     this._maxRetries = payload.maxRetries || 3;
-    this._delay = payload.delay || 10000;
-    this._retryCondition = payload.retryCondition || (() => true);
-    this._retryCallback = payload.retryCallback || (() => {});
-    this._retryComplete = payload.retryComplete || (() => {});
-    this._request = payload.request;
+    this._delay = payload.delay || 1000;
+    this._onComplete = payload.onComplete || ((response: any) => {});
+    this._retryCondition = payload.retryCondition;
+  }
+  private async _wait() {
+    await new Promise((resolve) => setTimeout(resolve, this._delay));
   }
 
-  private _delayExecution() {
-    return new Promise((resolve) => setTimeout(resolve, this._delay));
-  }
+  /**
+   * Retry a function until it succeeds or the max retries is reached.
+   * @param fn The function to retry.
+   * @returns The result of the function.
+   * @throws The error of the function if it fails.
+   */
+  async run(fn: Function) {
+    if (!fn) {
+      throw new Error("You must provide a function to retry.");
+    } else if (typeof fn !== "function") {
+      throw new Error("The function must be a function.");
+    }
 
-  private _setCount(newCount: number) {
-    useGlobal().set("_retryCount", newCount);
-  }
-
-  async run() {
-    console.log("🚀 running()");
-
-    console.log({
-      _retryCount: this._retryCount,
-      _maxRetries: this._maxRetries,
-      _delay: this._delay,
-      _retryCondition: this._retryCondition,
-      _retryCallback: this._retryCallback,
-      _retryComplete: this._retryComplete,
-      _request: this._request,
-    });
-
-    while (this._retryCount < this._maxRetries) {
+    while (this._maxRetries > this.counter) {
+      let result;
       try {
-        this._setCount(this._retryCount + 1);
-        await this._request?.();
+        result = await fn();
+
+        if (this._retryCondition(result)) {
+          throw "retry";
+        }
+
+        this.counter = this._maxRetries;
+        return result;
       } catch (error) {
-        if (this._retryCondition?.(error)) {
-          // by default true
-          await this._delayExecution();
-          this._retryCallback?.(error);
-        } else {
-          throw error;
+        await this._wait();
+        this.counter++;
+      } finally {
+        if (this.counter === this._maxRetries) {
+          this._onComplete(result);
         }
       }
     }
-
-    this._retryComplete?.();
-    return this._retryCount === this._maxRetries;
   }
 }

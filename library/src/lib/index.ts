@@ -3,12 +3,13 @@
  * the main entry point for the library
  */
 import { IVeryGoodConfigContructor } from "./types/vConfig";
-import { IVeryGoodFetchWrapperPayload } from "./types/vFetch";
+import { IRetryOptions, IVeryGoodFetchWrapperPayload } from "./types/vFetch";
 import { TCacheStrategy } from "./types/vCache";
 
 import VeryGoodConfig from "./core/vConfig";
 import VeryGoodFetchWrapper from "./core/vFetch";
 import VeryGoodCache from "./core/vCache";
+import vRetry from "./core/vRetry";
 
 export * from "./types/index";
 
@@ -50,4 +51,4 @@ const vFetch = async (
 const vCache = (strategy: TCacheStrategy): VeryGoodCache =>
   new VeryGoodCache(strategy);
 
-export { vSetupConfig, vFetch, vCache };
+export { vSetupConfig, vFetch, vCache, vRetry };
