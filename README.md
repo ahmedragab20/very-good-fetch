@@ -155,7 +155,7 @@ cache.asObject();
 
 ## very good comming features 🚀
 
-- [ ] Retry requests on failure (with a limit)
+- [x] Retry requests on failure (with a limit)
 - [ ] Throuttle requests out of the box
 - [ ] Debounce requests out of the box
 - [ ] More cache strategies (e.g. cookies) + expire time for each cache
