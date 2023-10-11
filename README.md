@@ -156,7 +156,7 @@ cache.asObject();
 ## very good comming features 🚀
 
 - [x] Retry Module
-- [ ] Throuttle Module
+- [x] Throuttle Module
 - [ ] Debounce Module
 - [ ] More cache strategies (e.g. cookies) + expire time for each cache
 - [ ] More interceptors (e.g. onBeforeRedirect, onAfterRedirect, etc.)

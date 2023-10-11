@@ -1,4 +1,4 @@
-import { printerror } from "../utils/console";
+import { printerror, printlog } from "../utils/console";
 interface IThrottle {
   delay: number;
 }
@@ -15,6 +15,8 @@ interface IThrottle {
 export default class vThrottle {
   private _delay: number;
   private _lastFn: any;
+  private _lastRun: any;
+  private _queuedFnTriggered: boolean = false;
 
   constructor(payload: IThrottle) {
     this._delay = payload.delay;
@@ -25,17 +27,28 @@ export default class vThrottle {
         "vThrottle needs to receive a function as a parameter"
       );
     }
+
+    const waiting = this._lastRun && Date.now() < this._lastRun + this._delay;
     try {
-      if (!this._lastFn) {
+      if (waiting || this._queuedFnTriggered) {
         this._lastFn = fn;
-        fn();
-      } else {
-        setTimeout(() => {
-          fn();
-        }, this._delay);
+        return;
       }
+
+      this._lastRun = Date.now();
+      fn();
+      this._lastFn = fn;
     } catch (error) {
       printerror(error);
+    } finally {      
+      if (waiting && !this._queuedFnTriggered && this._lastFn) {
+        this._queuedFnTriggered = true;
+        setTimeout(() => {
+          this._lastFn();
+          this._queuedFnTriggered = false;
+          this._lastRun = Date.now();
+        }, this._delay);
+      }
     }
   }
 }

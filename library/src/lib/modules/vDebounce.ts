@@ -1,4 +1,4 @@
-import { printerror } from "../utils/console";
+import { printerror, printwarn } from "../utils/console";
 
 interface IDebounce {
   delay: number;
@@ -17,6 +17,12 @@ export default class vDebounce {
   private _delay: number;
   private _interval: any;
   constructor(payload: IDebounce) {
+    if (payload && payload.delay < 250) {
+      printwarn(
+        "it's not recommended to use a delay less than 250ms for vDebounce."
+      )
+    }
+
     this._delay = payload.delay;
   }
 

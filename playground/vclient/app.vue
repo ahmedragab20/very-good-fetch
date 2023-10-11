@@ -12,12 +12,11 @@
         color="primary"
         size="xl"
         :ui="{
-          'rounded': 'rounded-full',
+          rounded: 'rounded-full',
         }"
       >
         Click me {{ counter }} - {{ actualCounter }}
       </UButton>
-
     </div>
 
     <div>
@@ -36,19 +35,13 @@
 <script setup lang="ts">
 import { vFetch, vDebounce, vThrottle } from "../../library/src/lib/index";
 
-useSeoMeta({
-  title: "Very Good Work",
-  description: "Very Good Work",
-  keywords: "Very Good Work",
-});
-
-const debounced = new vDebounce({ delay: 2000 });
+const debounced = new vDebounce({ delay: 300 });
 const throttled = new vThrottle({ delay: 2000 });
 
 const search = ref("");
 const respose = ref();
 function getSearch(term: string) {
-  debounced.run(async () => {
+  throttled.run(async () => {
     respose.value = await vFetch(
       `https://demo.dataverse.org/api/search?q=${term}`
     );
@@ -59,10 +52,10 @@ const actualCounter = ref(0);
 const clickit = function () {
   actualCounter.value++;
   console.log("actualCounter: ", actualCounter.value);
-  
-  throttled.run(() => {
+
+  debounced.run(() => {
     counter.value++;
-    console.log("clickit");
+    console.log("counter: ", counter.value);
   });
 };
 
