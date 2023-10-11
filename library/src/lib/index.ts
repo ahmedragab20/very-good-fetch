@@ -9,7 +9,9 @@ import { TCacheStrategy } from "./types/vCache";
 import VeryGoodConfig from "./core/vConfig";
 import VeryGoodFetchWrapper from "./core/vFetch";
 import VeryGoodCache from "./core/vCache";
-import vRetry from "./core/vRetry";
+import vRetry from "./modules/vRetry";
+import vDebounce from "./modules/vDebounce";
+import vThrottle from "./modules/vThrottle";
 
 export * from "./types/index";
 
@@ -51,4 +53,4 @@ const vFetch = async (
 const vCache = (strategy: TCacheStrategy): VeryGoodCache =>
   new VeryGoodCache(strategy);
 
-export { vSetupConfig, vFetch, vCache, vRetry };
+export { vSetupConfig, vFetch, vCache, vRetry, vDebounce, vThrottle };

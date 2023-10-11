@@ -1,69 +1,74 @@
 <template>
   <div class="container mx-auto py-10">
+    <h2 class="text-7xl font-extrabold">🐢</h2>
     <h2 class="text-4xl font-extrabold mb-5">
-      ✨ <span class="text-primary-400">Retry</span> Work goes here
+      <span class="text-primary-500">Very Good Work</span> Work goes here...
     </h2>
-    <!-- <UButton
-      @click="refresh"
-      icon="i-heroicons-sparkles"
-      size="xl"
-      :ui="{
-        rounded: 'rounded-full',
-      }"
-    >
-      Retry Rquest
-    </UButton> -->
-    <button
-      type="button"
-      @click="refresh"
-      class="px-4 py-2 border border-primary-400 rounded-full text-primary-400"
-    >
-      <span class="text-primary-400">Retry</span> Rquest
-    </button>
+
+    <div>
+      <UButton
+        @click="clickit"
+        class="mb-5 duration-200 active:scale-95"
+        color="primary"
+        size="xl"
+        :ui="{
+          'rounded': 'rounded-full',
+        }"
+      >
+        Click me {{ counter }} - {{ actualCounter }}
+      </UButton>
+
+    </div>
+
+    <div>
+      <UInput
+        v-model="search"
+        placeholder="Search for something nice..."
+        class="mb-5"
+      />
+    </div>
+    <div>
+      <pre>{{ respose }}</pre>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { vFetch, vSetupConfig, vRetry } from "../../library/src/lib/index";
+import { vFetch, vDebounce, vThrottle } from "../../library/src/lib/index";
 
-vSetupConfig({
-  interceptors: {
-    onBeforeRequest(request) {
-      console.log(`🐢 we have a request`);
-      console.log(request);
-      return request;
-    },
-    onError(error) {
-      console.log(`🐢 we have an error`);
-
-      console.log(error);
-      return error;
-    },
-  },
+useSeoMeta({
+  title: "Very Good Work",
+  description: "Very Good Work",
+  keywords: "Very Good Work",
 });
 
-const errJson = ref({
-  code: 500,
-  message: "Internal Server Error",
-});
+const debounced = new vDebounce({ delay: 2000 });
+const throttled = new vThrottle({ delay: 2000 });
 
-const refresh = async () => {
-  const retry = new vRetry({
-    maxRetries: 3,
-    delay: 2000,
-    onComplete(response) {
-      console.log("onComplete", response);
-    },
-    retryCondition(error) {
-      console.log("retryCondition", error);
-      return true;
-    },
+const search = ref("");
+const respose = ref();
+function getSearch(term: string) {
+  debounced.run(async () => {
+    respose.value = await vFetch(
+      `https://demo.dataverse.org/api/search?q=${term}`
+    );
   });
-
-  const response = await retry.run(async () => {
-    return await useFetch("/api/hello")
+}
+const counter = ref(0);
+const actualCounter = ref(0);
+const clickit = function () {
+  actualCounter.value++;
+  console.log("actualCounter: ", actualCounter.value);
+  
+  throttled.run(() => {
+    counter.value++;
+    console.log("clickit");
   });
-
-  console.log(response);
 };
+
+watch(search, (value) => {
+  console.log("search: ", value);
+
+  getSearch(value);
+});
 </script>

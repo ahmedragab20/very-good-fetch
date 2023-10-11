@@ -26,22 +26,22 @@ export default class vRetry {
 
   constructor(payload: IRetryOptions) {
     if (!payload) {
-      throw new Error("You must provide a payload to retry.");
+      throw new TypeError("You must provide a payload to retry.");
     } else if (typeof payload !== "object") {
-      throw new Error("The payload must be an object.");
+      throw new TypeError("The payload must be an object.");
     } else if (
       !payload.retryCondition ||
       typeof payload?.retryCondition !== "function"
     ) {
-      throw new Error("You must provide a retry condition function.");
+      throw new TypeError("You must provide a retry condition function.");
     } else if (payload.maxRetries && typeof payload.maxRetries !== "number") {
-      throw new Error("The maxRetries must be a number.");
+      throw new TypeError("The maxRetries must be a number.");
     } else if (payload.maxRetries && payload.maxRetries < 1) {
-      throw new Error("The maxRetries must be greater than 0.");
+      throw new TypeError("The maxRetries must be greater than 0.");
     } else if (payload.delay && typeof payload.delay !== "number") {
-      throw new Error("The delay must be a number.");
+      throw new TypeError("The delay must be a number.");
     } else if (payload.onComplete && typeof payload.onComplete !== "function") {
-      throw new Error("The onComplete must be a function.");
+      throw new TypeError("The onComplete must be a function.");
     }
 
     this._maxRetries = payload.maxRetries || 3;
@@ -60,10 +60,8 @@ export default class vRetry {
    * @throws The error of the function if it fails.
    */
   async run(fn: Function) {
-    if (!fn) {
-      throw new Error("You must provide a function to retry.");
-    } else if (typeof fn !== "function") {
-      throw new Error("The function must be a function.");
+    if (!fn || typeof fn !== "function") {
+      throw new TypeError("You must provide a function to retry.");
     }
 
     while (this._maxRetries > this.counter) {
