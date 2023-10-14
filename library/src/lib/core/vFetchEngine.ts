@@ -1,7 +1,6 @@
 import { IVeryGoodFetchWrapperPayload } from "../types/index.ts";
 import { printerror } from "../utils/console.ts";
 import { onError, onRequest, onResponse } from "../utils/interceptors.ts";
-import vRetry from "../modules/vRetry.ts";
 
 export default async function vFetchEngine(
   _fetch: any,

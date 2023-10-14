@@ -15,53 +15,51 @@
           rounded: 'rounded-full',
         }"
       >
-        Click me {{ counter }} - {{ actualCounter }}
+        Click me
       </UButton>
-    </div>
-
-    <div>
-      <UInput
-        v-model="search"
-        placeholder="Search for something nice..."
-        class="mb-5"
-      />
-    </div>
-    <div>
-      <pre>{{ respose }}</pre>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { vFetch, vDebounce, vThrottle } from "../../library/src/lib/index";
+import {
+  vFetch,
+  vDebounce,
+  vThrottle,
+  vSetupConfig,
+} from "../../library/src/lib/index";
 
-const debounced = new vDebounce({ delay: 300 });
-const throttled = new vThrottle({ delay: 2000 });
+vSetupConfig({
+  config: {
+    baseUrl: "https://dummyjson.com",
+  },
+  interceptors: {
+    onBeforeRequest(request) {
 
-const search = ref("");
-const respose = ref();
-function getSearch(term: string) {
-  throttled.run(async () => {
-    respose.value = await vFetch(
-      `https://demo.dataverse.org/api/search?q=${term}`
-    );
-  });
-}
-const counter = ref(0);
-const actualCounter = ref(0);
-const clickit = function () {
-  actualCounter.value++;
-  console.log("actualCounter: ", actualCounter.value);
+      request.headers.set("Content-Type", "application/json")
 
-  debounced.run(() => {
-    counter.value++;
-    console.log("counter: ", counter.value);
-  });
-};
+      return request
+    },
+    onAfterRequest(request) {
+      console.log("onAfterRequest", request);
 
-watch(search, (value) => {
-  console.log("search: ", value);
+      return request;
+    },
+    onBeforeResponse(response) {
+      console.log("onBeforeResponse", response);
 
-  getSearch(value);
+      return response;
+    },
+  },
 });
+
+const clickit = () => {
+  vFetch("/products/1", {
+    method: "PUT" /* or PATCH */,
+    // headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: "iPhone Galaxy +1",
+    }),
+  }).then((res) => console.log(res));
+};
 </script>

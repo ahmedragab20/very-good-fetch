@@ -23,6 +23,7 @@ export default class veryGoodFetchWrapper {
       const headers = this._config?.headers || {};
 
       let _fetch;
+
       if (this._vFetch) {
         _fetch = this._vFetch;
       } else {
@@ -62,7 +63,7 @@ export default class veryGoodFetchWrapper {
       console.log(finalResponse);
 
       if (cacheBox && vOptions?.cache) cacheBox?.set(this._url, finalResponse);
-      
+
       return finalResponse;
     } catch (error) {
       printerror(error);
