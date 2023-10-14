@@ -27,7 +27,7 @@ import {
   vDebounce,
   vThrottle,
   vSetupConfig,
-} from "../../library/src/lib/index";
+} from "../../library/dist/very-good-fetch.js";
 
 vSetupConfig({
   config: {
@@ -35,10 +35,10 @@ vSetupConfig({
   },
   interceptors: {
     onBeforeRequest(request) {
+      request.headers.set("Content-Type", "application/json");
+      request.headers.set("FOO", "BAR");
 
-      request.headers.set("Content-Type", "application/json")
-
-      return request
+      return request;
     },
     onAfterRequest(request) {
       console.log("onAfterRequest", request);

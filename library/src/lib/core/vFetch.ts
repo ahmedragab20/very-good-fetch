@@ -60,8 +60,6 @@ export default class veryGoodFetchWrapper {
           ]?.()
         : response;
 
-      console.log(finalResponse);
-
       if (cacheBox && vOptions?.cache) cacheBox?.set(this._url, finalResponse);
 
       return finalResponse;

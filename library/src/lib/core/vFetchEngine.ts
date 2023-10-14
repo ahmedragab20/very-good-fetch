@@ -12,7 +12,27 @@ export default async function vFetchEngine(
     const request = await onRequest(url, options);
 
     // fetch
-    const response = await _fetch(request);
+    let response: any = null;
+
+    await _fetch(request)
+      .then((rs: any) => {
+        response = rs;
+        return;
+      })
+      .catch(async (err: any) => {
+        const eMsg = (err?.message as string)?.toLowerCase() || "";
+        //! this is a workaround made specially for node-fetch library
+        //_ will be looking for a better solution later on
+
+        if (eMsg.includes("invalid url")) {
+          response = await await _fetch(url, { request });
+          return;
+        }
+
+        printerror(err);
+        response = err;
+        return;
+      });
 
     if (response?.ok) {
       // on response interceptors
@@ -23,7 +43,6 @@ export default async function vFetchEngine(
       const error = (await response?.json()) || response;
 
       const modifiedError = await onError(error);
-
       return modifiedError || error;
     }
   } catch (error) {

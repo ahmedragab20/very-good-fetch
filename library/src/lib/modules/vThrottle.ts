@@ -1,4 +1,4 @@
-import { printerror, printlog } from "../utils/console";
+import { printerror } from "../utils/console";
 interface IThrottle {
   delay: number;
 }
