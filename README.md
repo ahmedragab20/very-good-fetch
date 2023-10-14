@@ -157,7 +157,7 @@ cache.asObject();
 
 - [x] Retry Module
 - [x] Throuttle Module
-- [ ] Debounce Module
+- [x] Debounce Module
 - [ ] More cache strategies (e.g. cookies) + expire time for each cache
 - [ ] More interceptors (e.g. onBeforeRedirect, onAfterRedirect, etc.)
 - [ ] Event listeners (another version of interceptors)
