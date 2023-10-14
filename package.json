@@ -1,50 +1,16 @@
 {
   "name": "very-good-fetch",
-  "version": "0.0.6",
-  "description": "A TypeScript library for making HTTP requests with caching system that can be used as standalone feature.",
-  "author": "Ahmed Ragab <ahmedragab20901@gmail.com>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ahmedragab20/very-good-fetch"
-  },
-  "type": "module",
-  "types": "./dist/very-good-fetch.d.ts",
-  "main": "./dist/very-good-fetch.umd.cjs",
-  "module": "./dist/very-good-fetch.js",
-  "exports": {
-    ".": {
-      "import": "./dist/very-good-fetch.js",
-      "require": "./dist/very-good-fetch.umd.cjs"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "http",
-    "fetch-api",
-    "fetch",
-    "ar-catch",
-    "very-good-fetch"
-  ],
-  "homepage": "https://github.com/ahmedragab20/very-good-fetch",
-  "bugs": {
-    "url": "https://github.com/ahmedragab20/very-good-fetch/issues"
-  },
+  "version": "0.0.0",
+  "description": "Very good fetch ecosystem controller",
   "scripts": {
-    "dev": "vite",
-    "build": "rm -rf dist && tsc && vite build",
-    "preview": "vite preview",
-    "recycle": "rm -rf node_modules && pnpm install"
+    "reinit": "rm -rf node_modules && pnpm i",
+    "reinit:lib": "rm -rf library/node_modules && pnpm i -C library",
+    "dev:lib": "vite library/",
+    "build:lib": "vite build library/"
   },
+  "author": "Ahmed Ragab",
+  "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.4.2",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.0",
-    "vite-plugin-dts": "^3.3.1"
-  },
-  "publishConfig": {
-    "access": "public"
+    "vite": "^4.4.0"
   }
 }

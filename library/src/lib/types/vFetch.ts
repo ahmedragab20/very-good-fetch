@@ -54,16 +54,10 @@ export interface IVeryGoodOptions {
    * @optional
    */
   refreshCache?: boolean;
-
-  /*
-    picky response
-    retry
-    debounce
-    throttle
-   */
 }
 
 export type ResponseType =
+  | "pure"
   | "json"
   | "text"
   | "blob"

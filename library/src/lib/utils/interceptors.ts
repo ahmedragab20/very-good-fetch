@@ -1,9 +1,11 @@
-import { IGerneric } from "../types/index.ts";
-import { useGlobal } from "./internals";
+import {
+  IVeryGoodFetchWrapperPayload,
+} from "../types/index.ts";
+import { useGlobal } from "./internals.ts";
 
 export async function onRequest(
   url: string,
-  options: IGerneric
+  options: IVeryGoodFetchWrapperPayload
 ): Promise<Request> {
   const _interceptors = useGlobal().get("_interceptors") || {};
   const onBeforeRequest = _interceptors?.onBeforeRequest || null;
@@ -47,7 +49,9 @@ export async function onResponse(response: Response): Promise<Response | any> {
   return modifiedResponse || response;
 }
 
-export async function onError(error: any): Promise<Error> {
+export async function onError(
+  error: any,
+): Promise<Error | any> {
   const _interceptors = useGlobal().get("_interceptors") || {};
   const _onError = _interceptors?.onError || null;
   let modifiedError = null;
