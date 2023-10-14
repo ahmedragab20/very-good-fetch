@@ -1,5 +1,6 @@
 export default defineEventHandler(() => {
-  return {
-    hello: "world"
-  }
+  return createError({
+    statusCode: 500,
+    message: 'Internal Server Error'
+  })
 })

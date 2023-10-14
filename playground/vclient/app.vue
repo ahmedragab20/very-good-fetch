@@ -24,6 +24,27 @@
       <UInput id="search_input" v-model="search" trailing />
     </div>
 
+    <div>
+      <UButton
+        @click="retryit"
+        class="my-5 duration-200 active:scale-95"
+        color="pink"
+        size="xl"
+        variant="outline"
+        :ui="{
+          rounded: 'rounded-full',
+        }"
+      >
+        Retry it...
+      </UButton>
+    </div>
+
+    <div class="my-5">
+      <UBadge size="lg" variant="soft">
+        <strong>{{ retryCount }}</strong>
+      </UBadge>
+    </div>
+
     <div class="my-5">
       <pre>{{ response }}</pre>
     </div>
@@ -31,7 +52,13 @@
 </template>
 
 <script setup lang="ts">
-import { vFetch, vDebounce, vThrottle, vSetupConfig } from "very-good-fetch";
+import {
+  vFetch,
+  vDebounce,
+  vThrottle,
+  vSetupConfig,
+  vRetry,
+} from "very-good-fetch";
 
 vSetupConfig({
   config: {
@@ -40,19 +67,7 @@ vSetupConfig({
   interceptors: {
     onBeforeRequest(request) {
       request.headers.set("Content-Type", "application/json");
-      request.headers.set("FOO", "BAR");
-
       return request;
-    },
-    onAfterRequest(request) {
-      console.log("onAfterRequest", request);
-
-      return request;
-    },
-    onBeforeResponse(response) {
-      console.log("onBeforeResponse", response);
-
-      return response;
     },
   },
 });
@@ -76,11 +91,49 @@ const throttle = new vThrottle({ delay: 2000 });
 
 const search = ref("");
 
-const searchit = (query: string) => {  
+const searchit = (query: string) => {
   throttle.run(async () => {
     response.value = await vFetch(`/posts/search?q=${query}`);
   });
 };
 
 watch(search, searchit);
+const retryCount = ref(0);
+
+const retryit = async () => {
+  const retry = new vRetry({
+    maxRetries: 3,
+    delay: 1000,
+    onComplete: () => {
+      console.log(
+        "%cRetry completed",
+        "color: #C55F96; font-weight: bold; font-size: 1.1rem;"
+      );
+    },
+    retryCondition: (error) => {
+      retryCount.value++;
+      console.log(
+        "%cRetry condition",
+        "color: #FF5F57; font-weight: bold; font-size: 1.1rem;",
+        error,
+      );
+      return error && error.status === 200;
+    },
+  });
+  retryCount.value = 0;
+  console.log("Retry it...");
+  
+  response.value = await retry.run(async () => {
+    try {
+      return await vFetch("/products/1", {
+        vOptions: {
+          responseType: "pure",
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  });
+};
 </script>
