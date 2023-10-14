@@ -8,6 +8,9 @@ dependencies:
   '@nuxt/ui':
     specifier: ^2.9.0
     version: 2.9.0(vue@3.3.4)(webpack@5.88.2)
+  very-good-fetch:
+    specifier: ^0.0.7
+    version: 0.0.7
 
 devDependencies:
   '@nuxt/devtools':
@@ -6962,6 +6965,10 @@ packages:
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /very-good-fetch@0.0.7:
+    resolution: {integrity: sha512-U99bTZo1wfDrmaTGLBhgXquhEAz+RGnAYjkoD6YqS89Bd89XzZ5zxY3PeXG5qE+0vsZRVGx7TPT2o9jrJAd4RA==}
     dev: false
 
   /vite-node@0.33.0:

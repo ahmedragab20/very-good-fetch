@@ -18,16 +18,20 @@
         Click me
       </UButton>
     </div>
+
+    <div class="max-w-sm">
+      <label for="search_input">Search Products</label>
+      <UInput id="search_input" v-model="search" trailing />
+    </div>
+
+    <div class="my-5">
+      <pre>{{ response }}</pre>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  vFetch,
-  vDebounce,
-  vThrottle,
-  vSetupConfig,
-} from "../../library/dist/very-good-fetch.js";
+import { vFetch, vDebounce, vThrottle, vSetupConfig } from "very-good-fetch";
 
 vSetupConfig({
   config: {
@@ -53,13 +57,30 @@ vSetupConfig({
   },
 });
 
+const response = ref();
+
+const decounce = new vDebounce({ delay: 1000 });
 const clickit = () => {
-  vFetch("/products/1", {
-    method: "PUT" /* or PATCH */,
-    // headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: "iPhone Galaxy +1",
-    }),
-  }).then((res) => console.log(res));
+  decounce.run(async () => {
+    response.value = await vFetch("/products/1", {
+      method: "PATCH" /* or PATCH */,
+      // headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "iPhone Galaxy +1",
+      }),
+    });
+  });
 };
+
+const throttle = new vThrottle({ delay: 2000 });
+
+const search = ref("");
+
+const searchit = (query: string) => {  
+  throttle.run(async () => {
+    response.value = await vFetch(`/posts/search?q=${query}`);
+  });
+};
+
+watch(search, searchit);
 </script>

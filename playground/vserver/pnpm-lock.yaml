@@ -12,8 +12,8 @@ dependencies:
     specifier: ^3.3.2
     version: 3.3.2
   very-good-fetch:
-    specifier: ^0.0.6
-    version: 0.0.6
+    specifier: ^0.0.7
+    version: 0.0.7
 
 packages:
 
@@ -455,8 +455,8 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /very-good-fetch@0.0.6:
-    resolution: {integrity: sha512-xFAOkXXH9XmD//iPBknXQ820YVp4ws8DF6sGC6sXol4N+yaY3Ea8nBkYtLe9xAHlIqt7tV5tboqJsYrZKhYbBw==}
+  /very-good-fetch@0.0.7:
+    resolution: {integrity: sha512-U99bTZo1wfDrmaTGLBhgXquhEAz+RGnAYjkoD6YqS89Bd89XzZ5zxY3PeXG5qE+0vsZRVGx7TPT2o9jrJAd4RA==}
     dev: false
 
   /web-streams-polyfill@3.2.1:

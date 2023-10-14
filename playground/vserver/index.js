@@ -1,6 +1,6 @@
 import express from "express";
 import fetchx from "node-fetch";
-import { vFetch, vSetupConfig } from "../../library/dist/very-good-fetch.js";
+import { vFetch, vSetupConfig } from "very-good-fetch";
 
 const app = express();
 
