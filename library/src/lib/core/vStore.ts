@@ -1,7 +1,7 @@
 import { IGerneric } from "../types/index.ts";
-import { ICacheValue, TCacheStrategy } from "../types/vCache";
-import { printerror } from "../utils/console";
-import { cacheFactory, keyExpired } from "../utils/vCache";
+import { ICacheValue, TCacheStrategy } from "../types/vCache.ts";
+import { printerror } from "../utils/console.ts";
+import { cacheFactory, keyExpired } from "../utils/vCache.ts";
 /**
  * vStore - Holds the cached data
  * @class vStore

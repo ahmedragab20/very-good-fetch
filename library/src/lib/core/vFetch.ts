@@ -4,7 +4,6 @@ import { useGlobal } from "../utils/internals";
 import vFetchEngine from "./vFetchEngine";
 import { printerror } from "../utils/console";
 import VeryGoodCache from "./vCache";
-
 export default class veryGoodFetchWrapper {
   private readonly _url: string = "";
   private readonly _options: IVeryGoodFetchWrapperPayload = {};
@@ -14,7 +13,6 @@ export default class veryGoodFetchWrapper {
   constructor(url: string, options?: IVeryGoodFetchWrapperPayload) {
     this._config = useGlobal().get("_config") || {};
     this._vFetch = useGlobal().get("_vFetch");
-
     this._url = getRequestUrl(url, this._config);
     this._options = options || {};
   }
@@ -25,6 +23,7 @@ export default class veryGoodFetchWrapper {
       const headers = this._config?.headers || {};
 
       let _fetch;
+
       if (this._vFetch) {
         _fetch = this._vFetch;
       } else {
@@ -52,11 +51,17 @@ export default class veryGoodFetchWrapper {
         },
       });
 
-      const finalResponse = await response?.[
-        getResponseType(vOptions || {}, this._config || {})
-      ]();
+      const finalResponse = !!getResponseType?.(
+        vOptions || {},
+        this._config || {}
+      )
+        ? await response?.[
+            getResponseType?.(vOptions || {}, this._config || {})
+          ]?.()
+        : response;
 
       if (cacheBox && vOptions?.cache) cacheBox?.set(this._url, finalResponse);
+
       return finalResponse;
     } catch (error) {
       printerror(error);
