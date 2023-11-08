@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto py-10">
+  <div class="container mx-auto py-10 px-10">
     <h2 class="text-7xl font-extrabold">🐢</h2>
     <h2 class="text-4xl font-extrabold mb-5">
       <span class="text-primary-500">Very Good Work</span> Work goes here...
@@ -38,6 +38,20 @@
         Retry it...
       </UButton>
     </div>
+    <div>
+      <UButton
+        @click="vtimeout"
+        class="my-5 duration-200 active:scale-95"
+        color="orange"
+        size="xl"
+        variant="outline"
+        :ui="{
+          rounded: 'rounded-full',
+        }"
+      >
+        Run Timeout
+      </UButton>
+    </div>
 
     <div class="my-5">
       <UBadge size="lg" variant="soft">
@@ -58,7 +72,8 @@ import {
   vThrottle,
   vSetupConfig,
   vRetry,
-} from "very-good-fetch";
+  vTimeout,
+} from "../../library/src/lib/index";
 
 vSetupConfig({
   config: {
@@ -115,24 +130,37 @@ const retryit = async () => {
       console.log(
         "%cRetry condition",
         "color: #FF5F57; font-weight: bold; font-size: 1.1rem;",
-        error,
+        error
       );
-      return error && error.status === 200;
+      return error && error.status === 201;
     },
   });
   retryCount.value = 0;
   console.log("Retry it...");
-  
   response.value = await retry.run(async () => {
     try {
       return await vFetch("/products/1", {
         vOptions: {
           responseType: "pure",
-        }
+        },
       });
     } catch (error) {
       console.log(error);
       return error;
+    }
+  });
+};
+
+const vtimeout = () => {
+  const timeout = new vTimeout({
+    timeout: 200,
+  });
+
+  timeout.run(() => {
+    let count = 0;
+    while (true) {
+      count++;
+      console.log("✍🏻", count);
     }
   });
 };

@@ -1,4 +1,5 @@
 import { IRetryOptions } from "../types/vRetry";
+import { IModulesReturn } from "..";
 
 /**
  * Utility class to retry a function until it succeeds or the max retries is reached.
@@ -17,7 +18,7 @@ import { IRetryOptions } from "../types/vRetry";
  * });
  * ```
  */
-export default class vRetry {
+export default class vRetry implements IModulesReturn {
   private readonly _maxRetries: number;
   private readonly _delay: number;
   private readonly _onComplete: (response: any) => void;

@@ -1,5 +1,10 @@
 import { printerror } from "../utils/console";
+import { IModulesReturn } from "..";
+
 interface IThrottle {
+  /**
+   * delay time in ms
+   */
   delay: number;
 }
 
@@ -8,11 +13,11 @@ interface IThrottle {
  *
  * @example
  * ```typescript
- * const debounce = new vDebounce({ delay: 1000 });
- * debounce.run(() => console.log("debounce"));
+ * const throttle = new vThrottle({ delay: 1000 });
+ * throttle.run(() => console.log("throttle"));
  * ```
  */
-export default class vThrottle {
+export default class vThrottle implements IModulesReturn {
   private _delay: number;
   private _lastFn: any;
   private _lastRun: any;
@@ -24,7 +29,7 @@ export default class vThrottle {
   public run(fn: Function) {
     if (!fn || typeof fn !== "function") {
       throw new TypeError(
-        "vThrottle needs to receive a function as a parameter"
+        "the - run - funciton needs to receive a function as a parameter"
       );
     }
 
@@ -40,7 +45,7 @@ export default class vThrottle {
       this._lastFn = fn;
     } catch (error) {
       printerror(error);
-    } finally {      
+    } finally {
       if (waiting && !this._queuedFnTriggered && this._lastFn) {
         this._queuedFnTriggered = true;
         setTimeout(() => {
