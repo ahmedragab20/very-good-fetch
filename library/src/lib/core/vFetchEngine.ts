@@ -40,7 +40,7 @@ export default async function vFetchEngine(
 
       return modifiedResponse || response;
     } else {
-      const error = (await response?.json()) || response;
+      const error = (await response?.json?.()) || response;
 
       const modifiedError = await onError(error);
       return modifiedError || error;

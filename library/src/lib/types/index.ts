@@ -3,7 +3,7 @@ export interface IGerneric {
 }
 
 export interface IModulesReturn {
-  run(fn: Function): any;
+  run(fn: () => any): any;
 }
 
 export * from "./vFetch";
