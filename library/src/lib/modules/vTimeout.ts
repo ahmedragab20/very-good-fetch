@@ -1,5 +1,5 @@
 import { IModulesReturn } from "..";
-import { printerror, printlog, printwarn } from "../utils/console";
+import { printerror } from "../utils/console";
 
 interface ITimeout {
   /**
@@ -10,84 +10,77 @@ interface ITimeout {
    * logic to excute in case the given time's over
    */
   onFailed?: Function;
-  /**
-   * logic to excute in case the excution has successfully completed within the given timeframe
-   */
-  onSuccess?: Function;
 }
 
 /**
- * utility class to apply timeout functionality on any given function
+ * utility class to apply timeout functionality on any asynchronous operation
  *
  * @example
  * ```typescript
  * const timeout = new vTimeout({
  *  timeout: 200, // ms
- *  onFailed(conf) {
+ *  onFailed() {
  *    // implement some logic if the time's over
- *  },
- *  onSuccess(conf) {
- *    // implement some logic when the excution has successfully completed within the timeframe
  *  }
  * });
  *
- * // usage
- * timeout.run(() => {
- *  // the logic that you want to excute
- * })
+ * // usage (ts)
+ * const response = await timeout.run<string>(async () => {
+ *  const res = await vFetch("/products", {
+ *    signal: abort.signal,
+ *  });
+ *
+ *  return res;
+ * });
+ *
+ * // usage (js)
+ * const response = await timeout.run(async () => {
+ *  const res = await vFetch("/products", {
+ *  signal: abort.signal,
+ * });
  * ```
  */
 export default class vTimeout implements IModulesReturn {
   private readonly _timout: number;
   private readonly onFailed: Function | undefined;
-  private readonly onSuccess: Function | undefined;
   private _runtime: number = 0;
-  private _timeover: boolean = false;
+  private _done: boolean = false;
 
   constructor(payload: ITimeout) {
     if (!payload.timeout || typeof payload.timeout !== "number") {
       printerror("😶 You need to pass timeout in ms (number)");
-    } else if (
-      (payload.onFailed && typeof payload.onFailed !== "function") ||
-      (payload.onSuccess && typeof payload.onSuccess !== "function")
-    ) {
-      throw new TypeError(
-        "🥹 the onFailed and onSuccess must be excutable (function)"
-      );
+    } else if (payload.onFailed && typeof payload.onFailed !== "function") {
+      throw new TypeError("🥹 the onFailed function must be excutable");
     }
 
     this._timout = payload.timeout;
     this.onFailed = payload.onFailed;
-    this.onSuccess = payload.onSuccess;
   }
 
-  run(fn: Function) {
-    printlog(fn);
-
+  async run<T>(fn: () => Promise<T>): Promise<T> {
     try {
       if (!fn || typeof fn !== "function") {
         throw new TypeError(
           "the - run - funciton needs to receive a function as a parameter"
         );
       }
-      fn?.();
-      while (true) {
-        if (this._runtime >= this._timout || this._runtime >= 100) {
-          printlog(
-            "%📦 I'm the basecase",
-            "font-size: 20px; font-weight: bold",
-            this._runtime,
-            this._timout
-          );
-          this._timeover = true;
-          break;
-        }
 
-        this._runtime++;
-        break;
-      }
+      const startRuntime = setInterval(() => {
+        this._runtime += 100;
+        if (this._runtime >= this._timout) {
+          clearInterval(startRuntime);
+          if (!this._done) {
+            this.onFailed?.();
+          }
+        }
+      }, 50);
+
+      const res = await fn?.();
+      this._done = true;
+      return Promise.resolve(res);
     } catch (error) {
       printerror(error);
+      return Promise.reject(error);
     }
   }
 

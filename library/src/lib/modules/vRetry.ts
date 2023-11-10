@@ -60,7 +60,7 @@ export default class vRetry implements IModulesReturn {
    * @returns The result of the function.
    * @throws The error of the function if it fails.
    */
-  async run(fn: Function) {
+  async run(fn: () => any) {
     if (!fn || typeof fn !== "function") {
       throw new TypeError("You must provide a function to retry.");
     }

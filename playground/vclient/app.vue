@@ -62,6 +62,9 @@
     <div class="my-5">
       <pre>{{ response }}</pre>
     </div>
+    <div class="my-5">
+      <pre>{{ timeoutResponse }}</pre>
+    </div>
   </div>
 </template>
 
@@ -132,7 +135,7 @@ const retryit = async () => {
         "color: #FF5F57; font-weight: bold; font-size: 1.1rem;",
         error
       );
-      return error && error.status === 201;
+      return error && error.status === 200;
     },
   });
   retryCount.value = 0;
@@ -151,17 +154,29 @@ const retryit = async () => {
   });
 };
 
-const vtimeout = () => {
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+}
+
+const timeoutResponse = ref<Product>();
+
+const vtimeout = async () => {
+  const abort = new AbortController();
+
   const timeout = new vTimeout({
-    timeout: 200,
+    timeout: 2000,
+    onFailed() {
+      console.log("🥶 Timeout's over");
+      abort.abort();
+    },
   });
 
-  timeout.run(() => {
-    let count = 0;
-    while (true) {
-      count++;
-      console.log("✍🏻", count);
-    }
+  timeoutResponse.value = await timeout.run<Product>(async () => {
+    return await vFetch("/products", {
+      signal: abort.signal,
+    });
   });
 };
 </script>
