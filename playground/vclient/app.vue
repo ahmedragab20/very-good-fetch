@@ -135,14 +135,18 @@ const retryit = async () => {
         "color: #FF5F57; font-weight: bold; font-size: 1.1rem;",
         error
       );
-      return error && error.status === 201;
+      return error && error.status === 200;
     },
   });
   retryCount.value = 0;
   console.log("Retry it...");
   response.value = await retry.run(async () => {
     try {
-      return await vFetch("/products/1");
+      return await vFetch("/products/1", {
+        vOptions: {
+          responseType: "pure",
+        },
+      });
     } catch (error) {
       console.log(error);
       return error;
