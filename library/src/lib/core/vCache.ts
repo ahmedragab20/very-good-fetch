@@ -7,7 +7,24 @@ import { vStore } from "./vStore.ts";
 interface ICacheOptions {
   expires: number;
 }
-
+/**
+ * the cache wrapper
+ * @param {TCacheStrategy} strategy
+ * @returns {VeryGoodCache}
+ * @example
+ * ```ts
+ * const cache = new vCache("memory");
+ * cache.set("key", "value");
+ * cache.get("key")
+ * cache.has("key")
+ * cache.delete("key")
+ * cache.clear()
+ * cache.keys()
+ * cache.values()
+ * cache.asObject()
+ * cache.size()
+ * ```
+ */
 export default class vCache {
   private readonly _strategy: TCacheStrategy | undefined;
 

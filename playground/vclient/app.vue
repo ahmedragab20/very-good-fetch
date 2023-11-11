@@ -76,6 +76,7 @@ import {
   vSetupConfig,
   vRetry,
   vTimeout,
+  vCache,
 } from "../../library/src/lib/index";
 
 vSetupConfig({
@@ -166,7 +167,7 @@ const vtimeout = async () => {
   const abort = new AbortController();
 
   const timeout = new vTimeout({
-    timeout: 2000,
+    timeout: 1000,
     onFailed() {
       console.log("🥶 Timeout's over");
       abort.abort();
@@ -179,4 +180,20 @@ const vtimeout = async () => {
     });
   });
 };
+const cache = new vCache("memory");
+cache.set("key", {
+  name: "Ahmed Ragab"
+});
+cache.set("key2", {
+  name: "GAZA"
+});
+console.log(cache.get("key"));
+console.log(cache.has("key"));
+console.log(cache.size());
+console.log(cache.keys());
+console.log(cache.values());
+
+
+console.log(cache.asObject());
+
 </script>

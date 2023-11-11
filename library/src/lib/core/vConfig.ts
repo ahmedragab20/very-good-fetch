@@ -1,6 +1,6 @@
 import {
   IVeryGoodConfig,
-  IVeryGoodConfigContructor,
+  IVeryGoodConfigConstructor,
   IVeryGoodInterceptors,
 } from "../types/vConfig";
 import { validateFetchInstance } from "../utils/vFetch.util";
@@ -11,7 +11,7 @@ export default class VeryGoodConfig {
   private readonly _config: IVeryGoodConfig = {};
   private readonly _interceptors: IVeryGoodInterceptors = {};
 
-  constructor(payload: IVeryGoodConfigContructor) {
+  constructor(payload: IVeryGoodConfigConstructor) {
     if (payload.fetchInstance) {
       const validInstance = validateFetchInstance(payload.fetchInstance);
       if (validInstance) {
