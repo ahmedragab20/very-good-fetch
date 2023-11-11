@@ -210,7 +210,7 @@ const vtimeout = async () => {
   timeoutResponse.value = await timeout.run<Product>(async () => {
     return await vFetch("/products", {
       signal: abort.signal,
-    });
+    })
   });
 };
 const cache = new vCache("memory");
