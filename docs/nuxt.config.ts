@@ -1,11 +1,4 @@
 export default defineNuxtConfig({
-  typescript: {
-    tsConfig: {
-      compilerOptions: {
-        verbatimModuleSyntax: false
-      }
-    }
-  },
   // https://github.com/nuxt-themes/docus
   extends: '@nuxt-themes/docus',
   devtools: { enabled: true },
