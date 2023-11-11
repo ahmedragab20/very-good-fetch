@@ -39,7 +39,10 @@ export function printwarn(...args: any[]) {
  */
 export function printerror(...args: any[]) {
   try {
-    const muted = useGlobal().get("_config")?.muteErrors;
+    const muted =
+      useGlobal().get("_config")?.muteErrors === undefined
+        ? true
+        : useGlobal().get("_config")?.muteErrors;
 
     if (muted) return;
     console.error(...args);
