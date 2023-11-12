@@ -62,9 +62,14 @@ export default class veryGoodFetchWrapper {
 
       if (cacheBox && vOptions?.cache) cacheBox?.set(this._url, finalResponse);
 
+      if (response?.statusCode === 1948) {
+        throw response?.error
+      }
+
       return finalResponse;
     } catch (error) {
       printerror(error);
+      throw error;
     }
   };
 }

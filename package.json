@@ -9,8 +9,5 @@
     "build:lib": "vite build library/"
   },
   "author": "Ahmed Ragab",
-  "license": "MIT",
-  "devDependencies": {
-    "vite": "^4.4.0"
-  }
+  "license": "MIT"
 }

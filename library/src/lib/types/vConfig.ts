@@ -1,6 +1,6 @@
 import { ResponseType } from "./vFetch";
 
-export interface IVeryGoodConfigContructor {
+export interface IVeryGoodConfigConstructor {
   /**
    * fetch instance
    * @type {any}

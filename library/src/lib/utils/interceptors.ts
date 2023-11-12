@@ -1,6 +1,4 @@
-import {
-  IVeryGoodFetchWrapperPayload,
-} from "../types/index.ts";
+import { IVeryGoodFetchWrapperPayload } from "../types/index.ts";
 import { useGlobal } from "./internals.ts";
 
 export async function onRequest(
@@ -49,9 +47,7 @@ export async function onResponse(response: Response): Promise<Response | any> {
   return modifiedResponse || response;
 }
 
-export async function onError(
-  error: any,
-): Promise<Error | any> {
+export async function onError(error: any): Promise<Error | any> {
   const _interceptors = useGlobal().get("_interceptors") || {};
   const _onError = _interceptors?.onError || null;
   let modifiedError = null;

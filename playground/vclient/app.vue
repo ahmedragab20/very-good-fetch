@@ -53,6 +53,21 @@
       </UButton>
     </div>
 
+    <div>
+      <UButton
+        @click="checkError"
+        class="my-5 duration-200 active:scale-95"
+        color="red"
+        size="xl"
+        variant="outline"
+        :ui="{
+          rounded: 'rounded-full',
+        }"
+      >
+        Check Error
+      </UButton>
+    </div>
+
     <div class="my-5">
       <UBadge size="lg" variant="soft">
         <strong>{{ retryCount }}</strong>
@@ -76,16 +91,35 @@ import {
   vSetupConfig,
   vRetry,
   vTimeout,
+  vCache,
 } from "../../library/src/lib/index";
 
 vSetupConfig({
   config: {
     baseUrl: "https://dummyjson.com",
+    // muteErrors: false
   },
   interceptors: {
     onBeforeRequest(request) {
+      console.log({ request });
+
       request.headers.set("Content-Type", "application/json");
       return request;
+    },
+    onAfterRequest(request) {
+      console.log(request);
+
+      return request;
+    },
+    onBeforeResponse(response) {
+      console.log({ response });
+
+      return response;
+    },
+    onError(error) {
+      console.error("%cError", "color: red;", error);
+
+      return error;
     },
   },
 });
@@ -166,7 +200,7 @@ const vtimeout = async () => {
   const abort = new AbortController();
 
   const timeout = new vTimeout({
-    timeout: 2000,
+    timeout: 100,
     onFailed() {
       console.log("🥶 Timeout's over");
       abort.abort();
@@ -176,7 +210,37 @@ const vtimeout = async () => {
   timeoutResponse.value = await timeout.run<Product>(async () => {
     return await vFetch("/products", {
       signal: abort.signal,
-    });
+    })
   });
+};
+const cache = new vCache("memory");
+cache.set("key", {
+  name: "Ahmed Ragab",
+});
+cache.set("key2", {
+  name: "GAZA",
+});
+console.log(cache.get("key"));
+console.log(cache.has("key"));
+console.log(cache.size());
+console.log(cache.keys());
+console.log(cache.values());
+
+console.log(cache.asObject());
+
+const checkError = async () => {
+  try {
+    await vFetch("http://localhost:3000/api/hello", {
+      method: "GET" /* or PATCH */,
+    })
+      .then((r) => {
+        console.log({ r });
+      })
+      .catch((e) => {
+        console.error({ e });
+      });
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>

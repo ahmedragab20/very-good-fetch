@@ -7,49 +7,55 @@ export default async function vFetchEngine(
   url: string,
   options: IVeryGoodFetchWrapperPayload
 ) {
+  // fetch
+  let reqReturn: any = null;
   try {
     // on request interceptors
     const request = await onRequest(url, options);
 
-    // fetch
-    let response: any = null;
-
     await _fetch(request)
       .then((rs: any) => {
-        response = rs;
+        reqReturn = rs;
+
         return;
       })
       .catch(async (err: any) => {
         const eMsg = (err?.message as string)?.toLowerCase() || "";
         //! this is a workaround made specially for node-fetch library
-        //_ will be looking for a better solution later on
+        //_ will be looking for a better solution later
 
         if (eMsg.includes("invalid url")) {
-          response = await await _fetch(url, { request });
+          reqReturn = await await _fetch(url, { request });
           return;
         }
 
         printerror(err);
-        response = err;
+        reqReturn = err;
         return;
       });
 
-    if (response?.ok) {
+    if (reqReturn?.ok) {
       // on response interceptors
-      const modifiedResponse = await onResponse(response);
+      const modifiedResponse = await onResponse(reqReturn);
 
-      return modifiedResponse || response;
+      return modifiedResponse || reqReturn;
     } else {
-      const error = (await response?.json?.()) || response;
+      const error = (await reqReturn?.json?.()) || reqReturn;
 
       const modifiedError = await onError(error);
-      return modifiedError || error;
+
+      // internal error indicator
+      return {
+        statusCode: 1948 /* 🇵🇸 Palestine, we will never forget */,
+        error: modifiedError || error,
+      };
     }
   } catch (error) {
     printerror(error);
-    // it'll not exute twice, just if it got unexpected error like aborting the request
-    const modifiedError = await onError(error);
 
-    return modifiedError || error;
+    return {
+      statusCode: 1948,
+      error: "unexpected error",
+    };
   }
 }
