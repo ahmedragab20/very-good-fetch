@@ -92,7 +92,7 @@ import {
   vRetry,
   vTimeout,
   vCache,
-} from "../../library/src/lib/index";
+} from "very-good-fetch";
 
 vSetupConfig({
   config: {
@@ -155,7 +155,7 @@ const retryCount = ref(0);
 const retryit = async () => {
   const retry = new vRetry({
     maxRetries: 3,
-    delay: 1000,
+    delay: 4000,
     onComplete: () => {
       console.log(
         "%cRetry completed",
@@ -200,7 +200,7 @@ const vtimeout = async () => {
   const abort = new AbortController();
 
   const timeout = new vTimeout({
-    timeout: 100,
+    timeout: 1000,
     onFailed() {
       console.log("🥶 Timeout's over");
       abort.abort();
@@ -210,7 +210,7 @@ const vtimeout = async () => {
   timeoutResponse.value = await timeout.run<Product>(async () => {
     return await vFetch("/products", {
       signal: abort.signal,
-    })
+    });
   });
 };
 const cache = new vCache("memory");

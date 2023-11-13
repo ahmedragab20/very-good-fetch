@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "@nuxt/ui": "^2.9.0",
-    "very-good-fetch": "^0.0.7"
+    "very-good-fetch": "^0.0.9"
   }
 }
