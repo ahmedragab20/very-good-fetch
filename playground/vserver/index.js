@@ -7,23 +7,23 @@ const app = express();
 app.use(express.json());
 
 const config = vSetupConfig({
-  // fetchInstance: fetchx,
+  fetchInstance: fetchx,
   config: {
     baseURL: "https://dummyjson.com",
   },
   interceptors: {
     onBeforeRequest: (config) => {
-      console.log("onBeforeRequest", config?.headers);
+      console.log("onBeforeRequest: ", config?.headers);
       config.headers.set("Content-Type", "application/json");
       config.headers.set("FOO", "BAR");
       return config;
     },
     onAfterRequest: (config) => {
-      console.log("onAfterRequest", config?.headers);
+      console.log("onAfterRequest: ", config?.headers);
       return config;
     },
     onBeforeResponse: (response) => {
-      console.log("onBeforeResponse", response?.headers);
+      console.log("onBeforeResponse: ", response?.headers);
       return response;
     },
     onError: (error) => {

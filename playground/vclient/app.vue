@@ -101,24 +101,20 @@ vSetupConfig({
   },
   interceptors: {
     onBeforeRequest(request) {
-      console.log({ request });
-
+      console.log(request);
       request.headers.set("Content-Type", "application/json");
       return request;
     },
     onAfterRequest(request) {
       console.log(request);
-
       return request;
     },
     onBeforeResponse(response) {
-      console.log({ response });
-
+      console.log(response);
       return response;
     },
     onError(error) {
-      console.error("%cError", "color: red;", error);
-
+      console.error("%c🚀Error", "color: red;", error);
       return error;
     },
   },
