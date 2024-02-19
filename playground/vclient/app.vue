@@ -196,7 +196,7 @@ const vtimeout = async () => {
   const abort = new AbortController();
 
   const timeout = new vTimeout({
-    timeout: 1000,
+    timeout: 100,
     onFailed() {
       console.log("🥶 Timeout's over");
       abort.abort();
@@ -226,17 +226,17 @@ console.log(cache.asObject());
 
 const checkError = async () => {
   try {
-    await vFetch("http://localhost:3000/api/hello", {
-      method: "GET" /* or PATCH */,
-    })
-      .then((r) => {
-        console.log({ r });
-      })
-      .catch((e) => {
-        console.error({ e });
-      });
+    const res = await vFetch("/quotes?limit=32&skip=10", {
+      method: "GET",
+    });
+
+    console.log({ res });
   } catch (error) {
-    console.error(error);
+    console.error(
+      "%c🤦🏻‍♂️ Got an error boss!",
+      "font-weight: bold; font-size: 1rem; color: seagreen; padding: 10px 4px;",
+      error
+    );
   }
 };
 </script>
